@@ -30,25 +30,25 @@ describe('total likes', () => {
 test('blog favorite', () => {
   const blogs = [
     {
-      title: "Canonical string reduction",
-      author: "Edsger W. Dijkstra",
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
       likes: 12
     },
     {
-      title: "Canonical string reduction",
-      author: "Edsger W. Dijkstra",
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
       likes: 13
     },
     {
-      title: "Canonical string reduction",
-      author: "Edsger W. Dijkstra",
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
       likes: 10
     }
   ]
   const result = listHelper.favoriteBlog(blogs)
   expect(result).toEqual({
-    title: "Canonical string reduction",
-    author: "Edsger W. Dijkstra",
+    title: 'Canonical string reduction',
+    author: 'Edsger W. Dijkstra',
     likes: 13
   })
 })
@@ -56,38 +56,38 @@ test('blog favorite', () => {
 test('most blogs', () => {
   const blogs = [
     {
-      title: "The Art of Computer Programming",
-      author: "Donald E. Knuth",
+      title: 'The Art of Computer Programming',
+      author: 'Donald E. Knuth',
       likes: 300
     },
     {
-      title: "Coders at Work: Reflections on the Craft of Programming",
-      author: "Peter Seibel",
+      title: 'Coders at Work: Reflections on the Craft of Programming',
+      author: 'Peter Seibel',
       likes: 300
     },
     {
-      title: "The Structure and Interpretation of Computer Programs",
-      author: "Harold Abelson and Gerald Jay Sussman",
+      title: 'The Structure and Interpretation of Computer Programs',
+      author: 'Harold Abelson and Gerald Jay Sussman',
       likes: 28
     },
     {
-      title: "The Structure and Interpretation of Computer Programs",
-      author: "Harold Abelson and Gerald Jay Sussman",
+      title: 'The Structure and Interpretation of Computer Programs',
+      author: 'Harold Abelson and Gerald Jay Sussman',
       likes: 28
     },
     {
-      title: "The Structure and Interpretation of Computer Programs",
-      author: "Harold Abelson and Gerald Jay Sussman",
+      title: 'The Structure and Interpretation of Computer Programs',
+      author: 'Harold Abelson and Gerald Jay Sussman',
       likes: 28
     },
     {
-      title: "A Case against the GO TO Statement",
-      author: "Edsger W. Dijkstra",
+      title: 'A Case against the GO TO Statement',
+      author: 'Edsger W. Dijkstra',
       likes: 25
     },
     {
-      title: "Clean Code: A Handbook of Agile Software Craftsmanship",
-      author: "Edsger W. Dijkstra",
+      title: 'Clean Code: A Handbook of Agile Software Craftsmanship',
+      author: 'Edsger W. Dijkstra',
       likes: 35
     }
   ]
@@ -101,38 +101,38 @@ test('most blogs', () => {
 test('most blogs', () => {
   const blogs = [
     {
-      title: "The Art of Computer Programming",
-      author: "Donald E. Knuth",
+      title: 'The Art of Computer Programming',
+      author: 'Donald E. Knuth',
       likes: 300
     },
     {
-      title: "Coders at Work: Reflections on the Craft of Programming",
-      author: "Peter Seibel",
+      title: 'Coders at Work: Reflections on the Craft of Programming',
+      author: 'Peter Seibel',
       likes: 300
     },
     {
-      title: "The Structure and Interpretation of Computer Programs",
-      author: "Harold Abelson and Gerald Jay Sussman",
+      title: 'The Structure and Interpretation of Computer Programs',
+      author: 'Harold Abelson and Gerald Jay Sussman',
       likes: 28
     },
     {
-      title: "The Structure and Interpretation of Computer Programs",
-      author: "Harold Abelson and Gerald Jay Sussman",
+      title: 'The Structure and Interpretation of Computer Programs',
+      author: 'Harold Abelson and Gerald Jay Sussman',
       likes: 28
     },
     {
-      title: "The Structure and Interpretation of Computer Programs",
-      author: "Harold Abelson and Gerald Jay Sussman",
+      title: 'The Structure and Interpretation of Computer Programs',
+      author: 'Harold Abelson and Gerald Jay Sussman',
       likes: 28
     },
     {
-      title: "A Case against the GO TO Statement",
-      author: "Edsger W. Dijkstra",
+      title: 'A Case against the GO TO Statement',
+      author: 'Edsger W. Dijkstra',
       likes: 25
     },
     {
-      title: "Clean Code: A Handbook of Agile Software Craftsmanship",
-      author: "Edsger W. Dijkstra",
+      title: 'Clean Code: A Handbook of Agile Software Craftsmanship',
+      author: 'Edsger W. Dijkstra',
       likes: 35
     }
   ]
