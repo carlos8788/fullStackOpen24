@@ -1,16 +1,37 @@
+/* eslint-disable semi */
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const helper = require('./test_helper')
+
+let token;
+let user;
+beforeAll(async () => {
+  await User.deleteMany({})
+  await api
+    .post('/api/users')
+    .send({ username: 'testuser', password: 'testpass', name: 'Test User' });
+
+  const result = await api
+    .post('/api/login')
+    .send({ username: 'testuser', password: 'testpass' });
+
+  token = result.body.token;
+  user = await User.findOne({ username: 'testuser'});
+});
 
 beforeEach(async () => {
   await Blog.deleteMany({})
 
   const blogObjects = helper.initialBlogs
     .map(blog => new Blog(blog))
-  const promiseArray = blogObjects.map(blog => blog.save())
+  const promiseArray = blogObjects.map(blog => {
+    blog.user = user._id;
+    return blog.save();
+  })
   await Promise.all(promiseArray)
 })
 
@@ -18,12 +39,15 @@ describe('Get blog', () => {
   test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
 
   test('Exist id property', async () => {
-    const response = await api.get('/api/blogs')
+    const response = await api
+      .get('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
 
     expect(response.status).toBe(200)
     expect(response.body.length).toBeGreaterThan(0)
@@ -40,9 +64,10 @@ describe('creation of new blogs', () => {
       url: 'new_url_test1',
       likes: 5
     }
-
+    
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -63,6 +88,7 @@ describe('creation of new blogs', () => {
 
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -85,6 +111,7 @@ describe('creation of new blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlogWithoutTitle)
       .expect(400)
 
@@ -102,6 +129,7 @@ describe('creation of new blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlogWithoutUrl)
       .expect(400)
 
@@ -112,11 +140,13 @@ describe('creation of new blogs', () => {
 
 describe('delete blog', () => {
   test('responds with 204 when blog is deleted', async () => {
-    const blogs = await api.get('/api/blogs')
+    const blogs = await api
+      .get('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
     const blogId = blogs.body[0].id
-    // console.log(blogId)
     await api
       .delete(`/api/blogs/${blogId}`)
+      .set('Authorization', `Bearer ${token}`)
       .expect(204)
   })
 })

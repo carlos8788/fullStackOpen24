@@ -1,7 +1,7 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
-// ...
+const middleware = require('../utils/middleware')
 
 
 blogsRouter.get('/', async (request, response) => {
@@ -10,7 +10,7 @@ blogsRouter.get('/', async (request, response) => {
 
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   const { title, url, author, likes } = request.body
 
   const decodedUser = request.user
@@ -44,7 +44,7 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 })
 
-blogsRouter.put('/:id', async (request, response) => {
+blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
   const { title, author, url, likes } = request.body
 
   const blog = {
@@ -60,13 +60,13 @@ blogsRouter.put('/:id', async (request, response) => {
 })
 
 
-blogsRouter.delete('/:id', async (request, response) => {
+blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
 
   const blog = await Blog.findById(request.params.id)
   const decodedUser = request.user
   const user = await User.findById(decodedUser)
   console.log(user)
-  if(blog.user.toString() !== user._id.toString()) return response.status(401).json({ error: 'unauthorized' })
+  if (blog.user.toString() !== user._id.toString()) return response.status(401).json({ error: 'unauthorized' })
   await Blog.findByIdAndDelete(request.params.id)
   response.status(204).end()
 })
