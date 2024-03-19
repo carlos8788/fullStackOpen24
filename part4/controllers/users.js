@@ -4,8 +4,10 @@ const User = require('../models/user')
 
 usersRouter.post('/', async (request, response) => {
   const { username, name, password } = request.body
-  const getUser = await User.findOne({ username: username})
-  if(getUser) return response.status(400).json({error: 'username already exists'})
+  const getUser = await User.findOne({ username: username })
+  if (getUser) return response.status(400).json({ error: 'username already exists' })
+
+  if (username.length < 3 || password.length < 3) return response.status(400).json({ error: 'The password or username is not greater than 3' })
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
