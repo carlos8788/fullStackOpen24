@@ -5,12 +5,12 @@ import Login from './components/Login'
 import api from './services/blogs';
 import { getUser, setLogin, setLogout } from './utils/permanentSession';
 import NewBlog from './components/NewBlog';
+import './app.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [success, setSuccess] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     const loggedUserJSON = getUser()
@@ -48,7 +48,10 @@ const App = () => {
       api.setToken(response.token)
 
     } catch (error) {
-      console.log('error')
+      setMessage(<p className='wrong'>Wrong username or password</p>)
+      setTimeout(() => {
+        setMessage(null)
+      }, 4000)
     }
   }
 
@@ -65,6 +68,10 @@ const App = () => {
       const response = await api.create(data)
       console.log(response)
       setBlogs(blogs.concat({ title: response.title, author: response.author, url: response.url, id: response.id }))
+      setMessage(<p className='success'>a new blog {response.title}</p>)
+      setTimeout(() => {
+        setMessage(null)
+      }, 4000)
     } else {
       console.log('no')
     }
@@ -73,6 +80,7 @@ const App = () => {
 
   return (
     <div>
+      <div>{message}</div>
       {
         user
           ? <>
