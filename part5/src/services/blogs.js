@@ -34,4 +34,4 @@ const create = async newObject => {
   const response = await axios.post(baseUrl, newObject, config)
   return response.data
 }
-export default { getAll, login, setToken }
+export default { getAll, login, setToken, create }
