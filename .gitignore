@@ -29,3 +29,4 @@ node_modules/
 *.yaml
 .env
 /part3
+extensions.json
