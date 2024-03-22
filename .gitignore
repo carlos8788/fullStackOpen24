@@ -30,4 +30,9 @@ node_modules/
 .env
 /part3
 extensions.json
+<<<<<<< HEAD
 *.bash
+=======
+*.bash
+*.ps1
+>>>>>>> part-5
