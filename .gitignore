@@ -24,4 +24,8 @@ dist-ssr
 *.sw?
 pnpm-lock.yaml
 .env
-extensions.json
+extens/.vscode
+node_modules/
+*.yaml
+.env
+/part3
