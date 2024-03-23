@@ -21,10 +21,11 @@ const Blog = ({ blog, userID, deleteBlog }) => {
       <p>Author: {blog.author}</p>
       <button onClick={handleView}>view</button>
       {view &&
-        <div>
+        <div className="infoExtra">
           <p>url: {blog.url}</p>
           <p>user: {blog?.user?.name || 'none'}</p>
           <button onClick={() => addLike(blog.id)}>like</button>
+          <a href={blog.url}>link</a>
           <p>likes: {likes}</p>
           <DeleteBlog blog={blog} userID={userID} deleteBlog={deleteBlog} />
         </div>
