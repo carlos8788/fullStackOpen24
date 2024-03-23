@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 
 const DeleteBlog = ({ blog, userID, deleteBlog }) => {
 
@@ -10,4 +12,16 @@ const DeleteBlog = ({ blog, userID, deleteBlog }) => {
         </>
     )
 }
+
+DeleteBlog.propTypes = {
+    blog: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      user: PropTypes.shape({
+        id: PropTypes.string
+      })
+    }).isRequired,
+    userID: PropTypes.string.isRequired,
+    deleteBlog: PropTypes.func.isRequired
+  };
+  
 export default DeleteBlog
