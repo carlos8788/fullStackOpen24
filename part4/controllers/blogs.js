@@ -54,9 +54,11 @@ blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
     url,
     likes
   }
-  const existBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-  const result = await existBlog.json()
-  response.status(203).json(result)
+
+  const existBlog = await Blog.findByIdAndUpdate(request.params.id, { $inc: { likes: 1 } }, { new: true })
+  
+  
+  response.status(203).json(existBlog)
 
 })
 
