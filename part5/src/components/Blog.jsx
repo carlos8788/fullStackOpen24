@@ -25,7 +25,7 @@ const Blog = ({ blog, userID, deleteBlog }) => {
           <p>url: {blog.url}</p>
           <p>user: {blog?.user?.name || 'none'}</p>
           <button onClick={() => addLike(blog.id)}>like</button>
-          <a href={blog.url}>link</a>
+          <a href={blog.url} className="url">link</a>
           <p>likes: {likes}</p>
           <DeleteBlog blog={blog} userID={userID} deleteBlog={deleteBlog} />
         </div>
