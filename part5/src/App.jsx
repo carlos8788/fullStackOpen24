@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import Login from './components/Login'
@@ -6,11 +6,13 @@ import api from './services/blogs';
 import { getUser, setLogin, setLogout } from './utils/permanentSession';
 import NewBlog from './components/NewBlog';
 import './app.css'
+import Togglable from './components/Togglable';
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
+  const blogRef = useRef()
 
   useEffect(() => {
     const loggedUserJSON = getUser()
@@ -65,6 +67,7 @@ const App = () => {
     e.preventDefault()
     const data = Object.fromEntries(new FormData(e.target))
     if (Object.values(data).every(d => d)) {
+      blogRef.current.toggleVisibility()
       const response = await api.create(data)
       console.log(response)
       setBlogs(blogs.concat({ title: response.title, author: response.author, url: response.url, id: response.id }))
@@ -78,6 +81,14 @@ const App = () => {
 
   }
 
+  const blogForm = () => {
+    return (
+      <Togglable buttonLabel='new blog' ref={blogRef}>
+        <NewBlog handlesubmit={handleSubmitBlog} />
+      </Togglable>
+    )
+  }
+
   return (
     <div>
       <div>{message}</div>
@@ -86,7 +97,7 @@ const App = () => {
           ? <>
             <h2>{user.name} Log in</h2>
             <button onClick={logout}>Logout</button>
-            <NewBlog handlesubmit={handleSubmitBlog} />
+            {blogForm()}
           </>
           : <Login handleSubmit={handleSubmit} />
       }
