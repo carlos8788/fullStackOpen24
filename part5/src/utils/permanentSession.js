@@ -6,6 +6,7 @@ export const getUser = () => {
     return {
       name: data?.name,
       username: data?.username,
+      id: data?.id,
       token: token
     }
   }
@@ -13,7 +14,7 @@ export const getUser = () => {
 }
 
 export const setLogin = (user) => {
-  window.localStorage.setItem('user', JSON.stringify({ username: user.username, name: user.name }));
+  window.localStorage.setItem('user', JSON.stringify({ username: user.username, name: user.name, id: user.id }));
   window.localStorage.setItem('token', JSON.stringify(user.token));
 }
 

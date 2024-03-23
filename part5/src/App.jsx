@@ -18,6 +18,7 @@ const App = () => {
     const loggedUserJSON = getUser()
     if (loggedUserJSON) {
       setUser({
+        id: loggedUserJSON.id,
         name: loggedUserJSON.name,
         username: loggedUserJSON.username
       })
@@ -45,8 +46,9 @@ const App = () => {
     try {
       const data = new FormData(e.target)
       const response = await api.login(Object.fromEntries(data))
+      console.log(response)
       setLogin(response)
-      setUser({ name: response.name, usernames: response.username })
+      setUser({ name: response.name, usernames: response.username, id: response.id})
       api.setToken(response.token)
 
     } catch (error) {
@@ -89,13 +91,17 @@ const App = () => {
     )
   }
 
+  const deleteBlog = async (id) => {
+    api.deleteBlog(id)
+    setBlogs(blogs.filter(blog => blog.id !== id))
+  }
   return (
     <div>
       <div>{message}</div>
       {
         user
           ? <>
-            <h2>{user.name} Log in</h2>
+            <h2>{user.name} Log in </h2>
             <button onClick={logout}>Logout</button>
             {blogForm()}
           </>
@@ -103,7 +109,7 @@ const App = () => {
       }
       <h2>blogs</h2>
       {user !== null && blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} userID={user.id} deleteBlog={deleteBlog}/>
       )}
     </div>
   )
