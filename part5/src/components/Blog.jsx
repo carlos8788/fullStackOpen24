@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import api from "../services/blogs"
 import DeleteBlog from "./DeleteBlog"
+import PropTypes from 'prop-types';
+
 
 const Blog = ({ blog, userID, deleteBlog }) => {
   const [view, setView] = useState(false)
@@ -30,5 +32,20 @@ const Blog = ({ blog, userID, deleteBlog }) => {
     </div>
   )
 }
+
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string,
+    user: PropTypes.shape({
+      name: PropTypes.string
+    }),
+    likes: PropTypes.number
+  }).isRequired,
+  userID: PropTypes.string.isRequired,
+  deleteBlog: PropTypes.func.isRequired
+};
 
 export default Blog

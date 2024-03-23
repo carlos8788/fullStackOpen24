@@ -1,3 +1,6 @@
+import PropTypes from 'prop-types';
+
+
 const NewBlog = ({ handlesubmit }) => {
     return (
         <>
@@ -20,4 +23,9 @@ const NewBlog = ({ handlesubmit }) => {
         </>
     )
 }
+
+NewBlog.propTypes = {
+    handlesubmit: PropTypes.func.isRequired,
+};
+
 export default NewBlog
