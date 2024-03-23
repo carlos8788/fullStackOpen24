@@ -102,7 +102,7 @@ const App = () => {
           : <Login handleSubmit={handleSubmit} />
       }
       <h2>blogs</h2>
-      {user !== null && blogs.map(blog =>
+      {user !== null && blogs.sort((a, b) => b.likes - a.likes).map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
