@@ -70,7 +70,7 @@ const App = () => {
       blogRef.current.toggleVisibility()
       const response = await api.create(data)
       console.log(response)
-      setBlogs(blogs.concat({ title: response.title, author: response.author, url: response.url, id: response.id }))
+      setBlogs(blogs.concat({ title: response.title, author: response.author, url: response.url, id: response.id, user: response.user }))
       setMessage(<p className='success'>a new blog {response.title}</p>)
       setTimeout(() => {
         setMessage(null)
