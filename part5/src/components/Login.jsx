@@ -10,13 +10,13 @@ const Login = ({handleSubmit}) => {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="username">Username</label>
-                    <input type="text" name="username" />
+                    <input type="text" name="username" id='username'/>
                 </div>
                 <div>
                     <label htmlFor="password">Password</label>
-                    <input type="password" name="password" />
+                    <input type="password" name="password" id='password'/>
                 </div>
-                <input type="submit" value={'Log in'} />
+                <input type="submit" value={'Log in'} id='loginBtn'/>
             </form>
         </>
     )
