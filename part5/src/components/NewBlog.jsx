@@ -8,17 +8,17 @@ const NewBlog = ({ handlesubmit }) => {
             <form onSubmit={handlesubmit}>
                 <div>
                     <label htmlFor="title">title</label>
-                    <input type="text" name="title" />
+                    <input type="text" name="title" id='title'/>
                 </div>
                 <div>
                     <label htmlFor="author">author</label>
-                    <input type="text" name="author" />
+                    <input type="text" name="author" id='author'/>
                 </div>
                 <div>
                     <label htmlFor="url">url</label>
-                    <input type="text" name="url" />
+                    <input type="text" name="url" id='url'/>
                 </div>
-                <input type="submit" value="submit" />
+                <input type="submit" value="submit" id='submit'/>
             </form>
         </>
     )

@@ -9,7 +9,6 @@ const tokenExtractor = (request, response, next) => {
     }
     return null
   }
-  // código que extrae el token
   const token = getTokenFrom(request)
   if (!token) {
     return response.status(401).json({ error: 'token missing' })

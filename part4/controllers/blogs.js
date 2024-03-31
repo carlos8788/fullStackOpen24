@@ -12,7 +12,7 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   const { title, url, author, likes } = request.body
-
+  console.log({ title, url, author, likes })
   const decodedUser = request.user
 
   const user = await User.findById(decodedUser)
