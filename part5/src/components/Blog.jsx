@@ -15,7 +15,7 @@ const Blog = ({ blog, userID, deleteBlog, addLikes=addLike }) => {
 
   const handleAddLike = async () => {
     const newLikes = await addLikes(blog.id);
-    if (newLikes !== null) { // Asegúrate de que addLike fue exitoso antes de actualizar
+    if (newLikes !== null) { 
       setLikes(newLikes);
     }
   };
@@ -25,7 +25,7 @@ const Blog = ({ blog, userID, deleteBlog, addLikes=addLike }) => {
       <p>{blog.id}</p>
       <p>Title: {blog.title}</p>
       <p>Author: {blog.author}</p>
-      <button onClick={handleView}>view</button>
+      <button onClick={handleView} id="view">view</button>
       {view &&
         <div className="infoExtra">
           <p>url: {blog.url}</p>
