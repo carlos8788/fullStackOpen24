@@ -3,16 +3,22 @@ import api from "../services/blogs"
 import DeleteBlog from "./DeleteBlog"
 import PropTypes from 'prop-types';
 
+const addLike = async (id) => {
+  const likesUpdate = await api.updateBlog(id)
+  return likesUpdate.likes
+}
 
-const Blog = ({ blog, userID, deleteBlog }) => {
+const Blog = ({ blog, userID, deleteBlog, addLikes=addLike }) => {
   const [view, setView] = useState(false)
   const handleView = () => setView(!view)
   const [likes, setLikes] = useState(blog?.likes || 0)
 
-  const addLike = async (id) => {
-    const likesUpdate = await api.updateBlog(id)
-    setLikes(likesUpdate.likes)
-  }
+  const handleAddLike = async () => {
+    const newLikes = await addLikes(blog.id);
+    if (newLikes !== null) { // Asegúrate de que addLike fue exitoso antes de actualizar
+      setLikes(newLikes);
+    }
+  };
 
   return (
     <div className="box">
@@ -24,9 +30,9 @@ const Blog = ({ blog, userID, deleteBlog }) => {
         <div className="infoExtra">
           <p>url: {blog.url}</p>
           <p>user: {blog?.user?.name || 'none'}</p>
-          <button onClick={() => addLike(blog.id)}>like</button>
+          <button onClick={handleAddLike} className="likeBtn">like</button>
           <a href={blog.url} className="url">link</a>
-          <p>likes: {likes}</p>
+          <p className="likes">likes: {likes}</p>
           <DeleteBlog blog={blog} userID={userID} deleteBlog={deleteBlog} />
         </div>
       }
