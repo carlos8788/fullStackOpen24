@@ -1,17 +1,22 @@
-const filterReducer = (state = '', action) => {
-  switch (action.type) {
-    case 'SET_FILTER':
-      return action.payload
-    default:
-      return state
-  }
-}
+import { createSlice } from "@reduxjs/toolkit";
 
-export const filterChange = filter => {
-  return {
-    type: 'SET_FILTER',
-    payload: filter,
-  }
-}
+// Define un slice para el estado del filtro
+const filterSlice = createSlice({
+  name: 'filter',
+  initialState: '', // Estado inicial del filtro (cadena vacía)
+  reducers: {
+    // Acción para cambiar el filtro
+    setFilter(state, action) {
+      // Directamente retorna el nuevo valor del filtro
+      // Redux Toolkit permite "modificar" el estado de esta manera,
+      // pero internamente realiza cambios inmutables
+      return action.payload;
+    },
+  },
+});
 
-export default filterReducer
+// Exporta las acciones generadas automáticamente
+export const { setFilter } = filterSlice.actions;
+
+// Exporta el reducer generado por el slice
+export default filterSlice.reducer;
