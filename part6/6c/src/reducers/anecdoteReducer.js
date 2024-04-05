@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import anecdoteService from '../services/anecdotes'
 
+
 const anecdoteSlice = createSlice({
   name: 'anecdotes',
   initialState: [],
@@ -12,7 +13,7 @@ const anecdoteSlice = createSlice({
         state[index].votes += 1;
       }
     },
-    setAnecdotes(state, action){
+    setAnecdotes(state, action) {
       return action.payload
     },
     appendAnecdote(state, action) {
@@ -31,10 +32,23 @@ export const initializeAnecdotes = () => {
     dispatch(setAnecdotes(anecdotes))
   }
 }
-export const createAnecdotes = (content) =>{
+export const createAnecdotes = (content) => {
   return async dispatch => {
     const newAnecdote = await anecdoteService.createNew(content)
     dispatch(appendAnecdote(newAnecdote))
+  }
+}
+export const updateAnecdotes = (id, vote) => {
+  console.log('first')
+  return async dispatch => {
+    try {
+      const obj = { votes: vote + 1 }
+      await anecdoteService.updateVote(id, obj)
+      dispatch(addVote({ id }))
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 }
 
