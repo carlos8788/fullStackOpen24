@@ -15,13 +15,11 @@ const createNew = async (content) => {
 
 const updateVote = async (id, object) => {
   try {
-    console.log(`Updating vote for ID: ${id}`, object);
-    const result = await axios.put(`${baseUrl}/${id}`, object);
-    console.log('Update result:', result.data);
+    const result = await axios.patch(`${baseUrl}/${id}`, object);
     return result.data;
   } catch (error) {
     console.error('Error updating vote:', error);
-    throw error; // O manejar el error de forma adecuada
+    throw error; 
   }
 }
 

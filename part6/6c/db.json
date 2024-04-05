@@ -21,10 +21,6 @@
       "votes": 0
     },
     {
-      "votes": 4,
-      "id": "98312"
-    },
-    {
       "id": "032b",
       "content": "asdasdasd",
       "important": false,
@@ -34,7 +30,7 @@
       "id": "98ab",
       "content": "asdasdasd",
       "important": false,
-      "votes": 0
+      "votes": 12
     }
   ]
 }

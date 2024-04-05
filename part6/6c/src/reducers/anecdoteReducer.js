@@ -39,7 +39,7 @@ export const createAnecdotes = (content) => {
   }
 }
 export const updateAnecdotes = (id, vote) => {
-  console.log('first')
+
   return async dispatch => {
     try {
       const obj = { votes: vote + 1 }
