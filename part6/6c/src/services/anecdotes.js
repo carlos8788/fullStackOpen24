@@ -8,9 +8,20 @@ const getAll = async () => {
 }
 
 const createNew = async (content) => {
-  const object = { content, important: false }
+  const object = { content, important: false, votes: 0 }
   const response = await axios.post(baseUrl, object)
   return response.data
 }
 
-export default { getAll, createNew }
+const updateVote = async (id, object) => {
+  try {
+    const result = await axios.patch(`${baseUrl}/${id}`, object);
+    return result.data;
+  } catch (error) {
+    console.error('Error updating vote:', error);
+    throw error; 
+  }
+}
+
+
+export default { getAll, createNew, updateVote }
