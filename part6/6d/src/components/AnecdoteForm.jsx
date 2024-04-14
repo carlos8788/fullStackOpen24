@@ -9,8 +9,10 @@ const AnecdoteForm = () => {
     mutationFn: createAnecdote,
     onSuccess: (newAnecdote) => {
       const anecdotes = queryClient.getQueryData(['anecdotes'])
+
       queryClient.setQueryData(['anecdotes'], anecdotes.concat(newAnecdote))
       dispatch({ type: 'NEW', data: newAnecdote })
+
     }
   })
 
@@ -19,7 +21,12 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     console.log('new anecdote')
-    newAnecdoteMutation.mutate({ content, votes: 0 })
+    if (content.length >= 5) {
+      newAnecdoteMutation.mutate({ content, votes: 0 })
+    }
+    else {
+      dispatch({ type: 'ERROR' })
+    }
   }
 
   return (
