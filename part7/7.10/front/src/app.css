@@ -1,0 +1,21 @@
+.success {
+    background-color: rgb(80, 146, 80);
+    border: 2px solid green;
+}
+
+.wrong {
+    background-color: rgb(146, 80, 80);
+    border: 2px solid rgb(128, 0, 0);
+}
+
+.box {
+    margin: .5rem;
+    padding: 1rem;
+    border: solid 1px rgb(207, 207, 207);
+}
+
+.danger{
+    background-color: red;
+    color: white;
+    font-size: bold;
+}
