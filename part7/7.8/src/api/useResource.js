@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
 
 const useResource = (baseUrl) => {
   const [resources, setResources] = useState([]);
 
   let token = null;
 
-  const setToken = newToken => {
+  const setToken = (newToken) => {
     token = `bearer ${newToken}`;
   };
 
@@ -16,7 +16,7 @@ const useResource = (baseUrl) => {
     return response.data;
   };
 
-  const create = async newObject => {
+  const create = async (newObject) => {
     const config = {
       headers: { Authorization: token },
     };
@@ -28,9 +28,11 @@ const useResource = (baseUrl) => {
 
   const update = async (id, newObject) => {
     const response = await axios.put(`${baseUrl}/${id}`, newObject);
-    setResources(resources.map(resource =>
-      resource.id !== id ? resource : response.data
-    ));
+    setResources(
+      resources.map((resource) =>
+        resource.id !== id ? resource : response.data,
+      ),
+    );
     return response.data;
   };
 
@@ -39,7 +41,7 @@ const useResource = (baseUrl) => {
     setToken,
     getAll,
     create,
-    update
+    update,
   };
 };
 
