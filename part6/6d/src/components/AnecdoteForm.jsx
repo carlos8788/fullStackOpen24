@@ -6,14 +6,20 @@ const AnecdoteForm = () => {
   const queryClient = useQueryClient();
   const dispatch = useAnecdoteDispatch()
   const newAnecdoteMutation = useMutation({
-    mutationFn: createAnecdote,
+    mutationFn: (anecdote) => {
+      if (anecdote.content.length < 5) {
+        return Promise.reject(new Error('El contenido debe tener al menos 5 caracteres'));
+      }
+      return createAnecdote(anecdote);
+    },
     onSuccess: (newAnecdote) => {
       const anecdotes = queryClient.getQueryData(['anecdotes'])
 
       queryClient.setQueryData(['anecdotes'], anecdotes.concat(newAnecdote))
       dispatch({ type: 'NEW', data: newAnecdote })
 
-    }
+    },
+    onError: () => dispatch({ type: 'ERROR' })
   })
 
   const onCreate = (event) => {
@@ -21,12 +27,9 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     console.log('new anecdote')
-    if (content.length >= 5) {
-      newAnecdoteMutation.mutate({ content, votes: 0 })
-    }
-    else {
-      dispatch({ type: 'ERROR' })
-    }
+
+    newAnecdoteMutation.mutate({ content, votes: 0 })
+
   }
 
   return (
