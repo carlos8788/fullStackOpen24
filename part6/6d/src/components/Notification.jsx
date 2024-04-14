@@ -1,3 +1,6 @@
+import { useEffect } from "react"
+import { useAnecdoteDispatch, useAnecdoteValue } from "../NotificationContext"
+
 const Notification = () => {
   const style = {
     border: 'solid',
@@ -5,12 +8,23 @@ const Notification = () => {
     borderWidth: 1,
     marginBottom: 5
   }
-  
-  if (true) return null
+
+  const message = useAnecdoteValue()
+  const dispatch = useAnecdoteDispatch()
+  useEffect(() => {
+    if (message !== '') {
+      const timer = setTimeout(() => {
+        dispatch({ type: 'CLEAR' });
+      }, 5000);
+
+      
+      return () => clearTimeout(timer);
+    }
+  }, [message, dispatch]);
 
   return (
     <div style={style}>
-      
+      {message}
     </div>
   )
 }
