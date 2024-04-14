@@ -10,6 +10,7 @@ import {
   useMatch
 } from "react-router-dom"
 import { Anecdote } from './components/anecdote'
+import { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -68,31 +69,41 @@ const CreateNew = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: contentInput.value,
+      author: authorInput.value,
+      info: infoInput.value,
       votes: 0
     })
     navigate('/')
   }
+  const contentInput = useField('content')
+  const authorInput = useField('author')
+  const infoInput = useField('info')
 
+  const handleReset = (e) => {
+    e.preventDefault()
+    contentInput.onReset()
+    authorInput.onReset()
+    infoInput.onReset()
+  }
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} onReset={handleReset}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...contentInput} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...authorInput} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input {...infoInput} />
         </div>
         <button>create</button>
+        <button type='reset'>reset</button>
       </form>
     </div>
   )
@@ -124,7 +135,7 @@ const App = () => {
     setAnecdotes(anecdotes.concat(anecdote))
     setNotification(`a new anecdote ${anecdote.content} created!`)
     setTimeout(() => setNotification(''), 5000)
-    
+
   }
 
   const anecdoteById = (id) =>
