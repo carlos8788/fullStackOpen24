@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     message: '',
+    style: 'success',
 };
 
 export const notificationSlice = createSlice({
@@ -9,12 +10,22 @@ export const notificationSlice = createSlice({
     initialState,
     reducers: {
 
-        setMessage: (state, action) => {
-            state.message = action.payload;
+        setMessages: (state, action) => {
+            console.log(JSON.parse(JSON.stringify(state)))
+            state = {
+                message : action.payload.message,
+                style : action.payload.style
+
+            }
+            console.log(JSON.parse(JSON.stringify(state)))
+        },
+        cleanMessages: (state, action) => {
+            state.message = null;
         }
+        
     },
 });
 
 
-export const { setMessage } = notificationSlice.actions;
+export const { setMessages, cleanMessages } = notificationSlice.actions;
 export default notificationSlice.reducer;

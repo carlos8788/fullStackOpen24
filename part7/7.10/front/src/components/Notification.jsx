@@ -3,12 +3,17 @@ import { useSelector } from 'react-redux';
 
 const Notification = () => {
   
-  const message = useSelector(state => state.notification.message);
+  const message = useSelector(state => {
+    console.log(state.notification)
+    return state.notification.message
+  });
 
+  const style = useSelector(state => state.notification.style)
+  console.log(style)
   if (!message) return null; 
 
   return (
-    <div style={{ position: 'fixed', top: 20, right: 20, backgroundColor: 'lightgreen', padding: 10 }}>
+    <div style={{ position: 'fixed', top: 20, right: 20, backgroundColor: `${style === 'success'?'lightgreen':'red'}`, padding: 10 }}>
       {message}
     </div>
   );

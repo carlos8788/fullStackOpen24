@@ -7,12 +7,17 @@ import { getUser, setLogin, setLogout } from './utils/permanentSession';
 import NewBlog from './components/NewBlog';
 import './app.css'
 import Togglable from './components/Togglable';
+import { useDispatch } from 'react-redux';
+import { cleanMessages, setMessages } from './redux/notificationSlice';
+import Notification from './components/Notification';
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const blogRef = useRef()
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const loggedUserJSON = getUser()
@@ -52,9 +57,9 @@ const App = () => {
       api.setToken(response.token)
 
     } catch (error) {
-      setMessage(<p className='wrong'>Wrong username or password</p>)
+      dispatch(setMessages({message: 'Wrong username or password', style: 'danger'}))
       setTimeout(() => {
-        setMessage(null)
+        dispatch(cleanMessages(null))
       }, 4000)
     }
   }
@@ -73,9 +78,9 @@ const App = () => {
       const response = await api.create(data)
       console.log(response)
       setBlogs(blogs.concat({ title: response.title, author: response.author, url: response.url, id: response.id, user: response.user }))
-      setMessage(<p className='success'>a new blog {response.title}</p>)
+      dispatch(setMessages({message: `a new blog ${response.title}`, style: 'success'}))
       setTimeout(() => {
-        setMessage(null)
+        dispatch(cleanMessages(null))
       }, 4000)
     } else {
       console.log('no')
@@ -97,7 +102,7 @@ const App = () => {
   }
   return (
     <div>
-      <div>{message}</div>
+      <div>{<Notification/>}</div>
       {
         user
           ? <>
