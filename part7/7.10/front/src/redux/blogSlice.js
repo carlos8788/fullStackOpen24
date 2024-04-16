@@ -20,7 +20,7 @@ const blogsSlice = createSlice({
   name: 'blogs',
   initialState: {
     blogs: [],
-    status: 'idle', // 'idle', 'loading', 'succeeded', 'failed'
+    status: 'idle', 
     error: null
   },
   reducers: {},
