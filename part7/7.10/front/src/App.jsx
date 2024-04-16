@@ -1,25 +1,26 @@
 import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
-import blogService from './services/blogs'
+// import blogService from './services/blogs'
 import Login from './components/Login'
 import api from './services/blogs';
 import { getUser, setLogin, setLogout } from './utils/permanentSession';
 import NewBlog from './components/NewBlog';
 import './app.css'
 import Togglable from './components/Togglable';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { cleanMessages, setMessages } from './redux/notificationSlice';
 import Notification from './components/Notification';
+import { addBlog, deleteBlog, fetchBlogs } from './redux/blogSlice';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  // const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null)
   const blogRef = useRef()
 
   const dispatch = useDispatch()
-
+  const { blogs, status, error } = useSelector((state) => state.blogs);
   useEffect(() => {
+    // console.log(blogs, status, error)
     const loggedUserJSON = getUser()
     if (loggedUserJSON) {
       setUser({
@@ -32,18 +33,17 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const fetchBlogs = async () => {
+    const initfetchBlogs = async () => {
       if (user) {
         try {
-          const blogs = await blogService.getAll();
-          setBlogs(blogs);
+          dispatch(fetchBlogs());
         } catch (error) {
           console.error('Error getting blogs:', error);
         }
       }
     };
 
-    fetchBlogs();
+    initfetchBlogs();
   }, [user]);
 
   const handleSubmit = async (e) => {
@@ -51,13 +51,12 @@ const App = () => {
     try {
       const data = new FormData(e.target)
       const response = await api.login(Object.fromEntries(data))
-      console.log(response)
       setLogin(response)
-      setUser({ name: response.name, usernames: response.username, id: response.id})
+      setUser({ name: response.name, usernames: response.username, id: response.id })
       api.setToken(response.token)
 
     } catch (error) {
-      dispatch(setMessages({message: 'Wrong username or password', style: 'danger'}))
+      dispatch(setMessages({ message: 'Wrong username or password', style: 'danger' }))
       setTimeout(() => {
         dispatch(cleanMessages(null))
       }, 4000)
@@ -70,23 +69,30 @@ const App = () => {
   };
 
 
-  const handleSubmitBlog = async (e) => {
-    e.preventDefault()
-    const data = Object.fromEntries(new FormData(e.target))
+  const handleSubmitBlog = (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target));
     if (Object.values(data).every(d => d)) {
-      blogRef.current.toggleVisibility()
-      const response = await api.create(data)
-      console.log(response)
-      setBlogs(blogs.concat({ title: response.title, author: response.author, url: response.url, id: response.id, user: response.user }))
-      dispatch(setMessages({message: `a new blog ${response.title}`, style: 'success'}))
-      setTimeout(() => {
-        dispatch(cleanMessages(null))
-      }, 4000)
-    } else {
-      console.log('no')
-    }
+      blogRef.current.toggleVisibility();
 
-  }
+      dispatch(addBlog(data)).then(data => {
+        const response = data.payload;
+        if (response) {
+          dispatch(setMessages({ message: `A new blog ${response.title} added successfully`, style: 'success' }));
+          // setTimeout(() => {
+          //   dispatch(cleanMessages());
+          // }, 4000);
+        }
+      }).catch(error => {
+        console.log('Error creating blog:', error);
+        dispatch(setMessages({ message: 'Failed to add blog', style: 'danger' }));
+        setTimeout(() => {
+          dispatch(cleanMessages());
+        }, 4000);
+      });
+    } 
+  };
+
 
   const blogForm = () => {
     return (
@@ -96,13 +102,13 @@ const App = () => {
     )
   }
 
-  const deleteBlog = async (id) => {
-    api.deleteBlog(id)
-    setBlogs(blogs.filter(blog => blog.id !== id))
+  const deleteBlogs = async (id) => {
+    console.log('delete')
+    dispatch(deleteBlog(id))
   }
   return (
     <div>
-      <div>{<Notification/>}</div>
+      <div>{<Notification />}</div>
       {
         user
           ? <>
@@ -113,8 +119,8 @@ const App = () => {
           : <Login handleSubmit={handleSubmit} />
       }
       <h2>blogs</h2>
-      {user !== null && blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} userID={user.id} deleteBlog={deleteBlog}/>
+      {user !== null && [...blogs].sort((a, b) => b.likes - a.likes).map(blog =>
+        <Blog key={blog.id} blog={blog} userID={user.id} deleteBlog={deleteBlogs} />
       )}
     </div>
   )
