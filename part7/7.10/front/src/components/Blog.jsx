@@ -2,22 +2,21 @@ import { useEffect, useState } from "react"
 import api from "../services/blogs"
 import DeleteBlog from "./DeleteBlog"
 import PropTypes from 'prop-types';
+import { useDispatch } from "react-redux";
+import { updateBlogs } from "../redux/blogSlice";
 
-const addLike = async (id) => {
-  const likesUpdate = await api.updateBlog(id)
-  return likesUpdate.likes
-}
 
-const Blog = ({ blog, userID, deleteBlog, addLikes=addLike }) => {
+
+const Blog = ({ blog, userID, deleteBlog, }) => {
+  const dispatch = useDispatch()
+  console.log(blog)
   const [view, setView] = useState(false)
   const handleView = () => setView(!view)
   const [likes, setLikes] = useState(blog?.likes || 0)
 
   const handleAddLike = async () => {
-    const newLikes = await addLikes(blog.id);
-    if (newLikes !== null) { 
-      setLikes(newLikes);
-    }
+    dispatch(updateBlogs(blog.id)).then(data => console.log(data))
+
   };
 
   return (
@@ -32,7 +31,7 @@ const Blog = ({ blog, userID, deleteBlog, addLikes=addLike }) => {
           <p>user: {blog?.user?.name || 'none'}</p>
           <button onClick={handleAddLike} className="likeBtn">like</button>
           <a href={blog.url} className="url">link</a>
-          <p className="likes">likes: {likes}</p>
+          <p className="likes">likes: {blog?.likes}</p>
           <DeleteBlog blog={blog} userID={userID} deleteBlog={deleteBlog} />
         </div>
       }

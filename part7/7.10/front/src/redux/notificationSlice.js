@@ -12,11 +12,9 @@ export const notificationSlice = createSlice({
 
         setMessages: (state, action) => {
             console.log(JSON.parse(JSON.stringify(state)))
-            state = {
-                message : action.payload.message,
-                style : action.payload.style
+            state.message = action.payload.message,
+            state.style = action.payload.style,
 
-            }
             console.log(JSON.parse(JSON.stringify(state)))
         },
         cleanMessages: (state, action) => {

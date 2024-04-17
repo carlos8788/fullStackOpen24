@@ -24,6 +24,7 @@ if (process.env.NODE_ENV === 'test') {
 app.use('/api/login', loginRouter)
 app.use('/api/users', usersRouter)
 app.use(middleware.tokenExtractor)
+// app.use(middleware.userExtractor)
 app.use('/api/blogs', blogsRouter)
 
 module.exports = app

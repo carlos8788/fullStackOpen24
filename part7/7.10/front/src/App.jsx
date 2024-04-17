@@ -79,9 +79,9 @@ const App = () => {
         const response = data.payload;
         if (response) {
           dispatch(setMessages({ message: `A new blog ${response.title} added successfully`, style: 'success' }));
-          // setTimeout(() => {
-          //   dispatch(cleanMessages());
-          // }, 4000);
+          setTimeout(() => {
+            dispatch(cleanMessages());
+          }, 4000);
         }
       }).catch(error => {
         console.log('Error creating blog:', error);
