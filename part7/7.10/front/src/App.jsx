@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import Blog from './components/Blog'
-// import blogService from './services/blogs'
 import Login from './components/Login'
 import api from './services/blogs';
 import { getUser, setLogin, setLogout } from './utils/permanentSession';
@@ -11,30 +10,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import { cleanMessages, setMessages } from './redux/notificationSlice';
 import Notification from './components/Notification';
 import { addBlog, deleteBlog, fetchBlogs } from './redux/blogSlice';
+import { setUserLogout, setUsers } from './redux/userSlice';
 
 const App = () => {
-  // const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(null)
   const blogRef = useRef()
 
   const dispatch = useDispatch()
-  const { blogs, status, error } = useSelector((state) => state.blogs);
+  const { blogs } = useSelector((state) => state.blogs);
+  const user = useSelector(state => state.user)
+
   useEffect(() => {
-    // console.log(blogs, status, error)
+
     const loggedUserJSON = getUser()
     if (loggedUserJSON) {
-      setUser({
-        id: loggedUserJSON.id,
-        name: loggedUserJSON.name,
-        username: loggedUserJSON.username
-      })
+      dispatch(setUsers(loggedUserJSON))
       api.setToken(loggedUserJSON.token)
     }
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     const initfetchBlogs = async () => {
-      if (user) {
+      if (user.name) {
         try {
           dispatch(fetchBlogs());
         } catch (error) {
@@ -44,7 +40,7 @@ const App = () => {
     };
 
     initfetchBlogs();
-  }, [user]);
+  }, [dispatch, user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -52,7 +48,8 @@ const App = () => {
       const data = new FormData(e.target)
       const response = await api.login(Object.fromEntries(data))
       setLogin(response)
-      setUser({ name: response.name, usernames: response.username, id: response.id })
+      
+      dispatch(setUsers(response))
       api.setToken(response.token)
 
     } catch (error) {
@@ -64,8 +61,9 @@ const App = () => {
   }
 
   const logout = () => {
-    setUser(null)
     setLogout()
+    dispatch(setUserLogout())
+    
   };
 
 
@@ -84,13 +82,13 @@ const App = () => {
           }, 4000);
         }
       }).catch(error => {
-        console.log('Error creating blog:', error);
+        
         dispatch(setMessages({ message: 'Failed to add blog', style: 'danger' }));
         setTimeout(() => {
           dispatch(cleanMessages());
         }, 4000);
       });
-    } 
+    }
   };
 
 
@@ -103,23 +101,23 @@ const App = () => {
   }
 
   const deleteBlogs = async (id) => {
-    console.log('delete')
+    
     dispatch(deleteBlog(id))
   }
   return (
     <div>
       <div>{<Notification />}</div>
       {
-        user
+        user && user.name
           ? <>
-            <h2>{user.name} Log in </h2>
+            <h2>{user?.name} Log in </h2>
             <button onClick={logout}>Logout</button>
             {blogForm()}
           </>
           : <Login handleSubmit={handleSubmit} />
       }
       <h2>blogs</h2>
-      {user !== null && [...blogs].sort((a, b) => b.likes - a.likes).map(blog =>
+      {user.name !== null && [...blogs].sort((a, b) => b.likes - a.likes).map(blog =>
         <Blog key={blog.id} blog={blog} userID={user.id} deleteBlog={deleteBlogs} />
       )}
     </div>

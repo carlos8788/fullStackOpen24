@@ -1,7 +1,7 @@
 export const getUser = () => {
   const data = JSON.parse(window.localStorage.getItem('user'));
   const token = JSON.parse(window.localStorage.getItem('token'));
-  console.log(data, 'data')
+  // console.log(data, 'data')
   if (data) {
     return {
       name: data?.name,

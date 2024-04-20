@@ -9,7 +9,7 @@ import { updateBlogs } from "../redux/blogSlice";
 
 const Blog = ({ blog, userID, deleteBlog, }) => {
   const dispatch = useDispatch()
-  console.log(blog)
+  // console.log(blog)
   const [view, setView] = useState(false)
   const handleView = () => setView(!view)
   const [likes, setLikes] = useState(blog?.likes || 0)
