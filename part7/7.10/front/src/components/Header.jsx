@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setUserLogout } from "../redux/loginSlice";
 import { setLogin, setLogout } from "../utils/permanentSession";
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import Notification from "./Notification";
 import Togglable from "./Togglable";
 import NewBlog from "./NewBlog";
@@ -18,6 +18,8 @@ const Header = () => {
     const user = useSelector(state => state.user)
     const navigate = useNavigate()
     const blogRef = useRef()
+    const location = useLocation()
+
     const logout = () => {
         setLogout()
         dispatch(setUserLogout())
@@ -78,6 +80,7 @@ const Header = () => {
             });
         }
     };
+
     return (
         <>
             <div>{<Notification />}</div>
@@ -87,7 +90,7 @@ const Header = () => {
                     <>
                         <h2>{user?.name} Log in </h2>
                         <button onClick={logout}>Logout</button>
-                        {blogForm()}
+                        {location.pathname === '/' && blogForm()}
                     </>
                     : <Login handleSubmit={handleSubmit} />
             }

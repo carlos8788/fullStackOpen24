@@ -1,10 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAllUsers } from '../services/users';
+import { createSlice } from '@reduxjs/toolkit';
 
-// export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
-//     const users = await getAllUsers()
-//     return users
-// })
 
 const initialState = {
     name: "",
@@ -24,20 +19,6 @@ export const loginSlice = createSlice({
             return { ...initialState, name: null };
         }
     },
-    // extraReducers: (builder) => {
-    //     builder
-    //         .addCase(fetchUsers.pending, (state) => {
-    //             state.status = 'loading';
-    //         })
-    //         .addCase(fetchUsers.fulfilled, (state, action) => {
-    //             state.status = 'succeeded';
-    //             state.blogs = action.payload;
-    //         })
-    //         .addCase(fetchUsers.rejected, (state, action) => {
-    //             state.status = 'failed';
-    //             state.error = action.error.message;
-    //         })
-    // }
 });
 
 
