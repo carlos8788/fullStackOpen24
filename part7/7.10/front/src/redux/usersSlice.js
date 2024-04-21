@@ -6,41 +6,28 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
     return users
 })
 
-
-const initialState = {
-    name: "",
-    username: "",
-    id: "",
-    token: ""
-}
-
-export const loginSlice = createSlice({
-    name: 'login',
-    initialState,
-    reducers: {
-        setUsers: (state, action) => {
-            return { ...state, ...action.payload };
-        },
-        setUserLogout: () => {
-            return { ...initialState, name: null };
-        }
+export const usersSlice = createSlice({
+    name: 'users',
+    initialState: {
+        users: [],
+        status: 'idle',
+        error: null
     },
-    // extraReducers: (builder) => {
-    //     builder
-    //         .addCase(fetchUsers.pending, (state) => {
-    //             state.status = 'loading';
-    //         })
-    //         .addCase(fetchUsers.fulfilled, (state, action) => {
-    //             state.status = 'succeeded';
-    //             state.blogs = action.payload;
-    //         })
-    //         .addCase(fetchUsers.rejected, (state, action) => {
-    //             state.status = 'failed';
-    //             state.error = action.error.message;
-    //         })
-    // }
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchUsers.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchUsers.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.users = action.payload;
+            })
+            .addCase(fetchUsers.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            })
+    }
 });
 
-
-export const { setUsers, setUserLogout } = loginSlice.actions;
-export default loginSlice.reducer;
+export default usersSlice.reducer;

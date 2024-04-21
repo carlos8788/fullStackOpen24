@@ -1,26 +1,49 @@
 import { useEffect, useState } from "react"
 import { getAllUsers } from "../services/users"
 import { useDispatch, useSelector } from "react-redux"
+import { fetchUsers } from "../redux/usersSlice"
+import { Link } from "react-router-dom"
 
 
 
 const Users = () => {
     const dispatch = useDispatch()
-    // const user = useSelector(state => state.user)
-    // useEffect(() => {
-    //     const dataUsers = async () => {
-    //         const data = await dispatch(fetchUsers())
-    //         console.log(data)
-    //     }
-    //     dataUsers()
-    // }, [])
+    const users = useSelector(state => state.users.users)
+    useEffect(() => {
+        const dataUsers = async () => {
+            dispatch(fetchUsers())
+        }
+        dataUsers()
+    }, [dispatch,])
 
     return (
         <div>
             <h2>Users</h2>
-            {
-                // user?.map(user => <li key={user.id}>{user.name}</li>)
-            }
+            <table>
+                <thead>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Blogs created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        users?.map(user => <tr key={user.id}>
+                            <td>
+                                <Link to={`/user/${user.id}`}>{user.name}</Link>
+                            </td>
+                            <td>
+                                {user.blogs?.length}
+                            </td>
+                        </tr>)
+                    }
+                </tbody>
+                <tfoot>
+                    
+                </tfoot>
+            </table>
+
         </div>
     )
 }
