@@ -21,12 +21,18 @@ export const updateBlogs = createAsyncThunk('blogs/updateBlog', async (id) => {
   return updatedBlog;
 });
 
+export const getBlog = createAsyncThunk('blogs/getBlog', async (id) => {
+  const blog = await blogService.getBlog(id)
+  return blog
+})
+
 const blogsSlice = createSlice({
   name: 'blogs',
   initialState: {
     blogs: [],
     status: 'idle',
-    error: null
+    error: null,
+    currentBlog: null
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -53,6 +59,9 @@ const blogsSlice = createSlice({
         if (index !== -1) {
           state.blogs[index].likes = action.payload.likes; 
         }
+      })
+      .addCase(getBlog.fulfilled, (state, action) => {
+        state.currentBlog = action.payload
       });
   }
 });
