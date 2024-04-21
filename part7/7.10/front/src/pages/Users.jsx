@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { getAllUsers } from "../services/users"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchUsers } from "../redux/usersSlice"
 import { Link } from "react-router-dom"
@@ -8,7 +7,7 @@ import { Link } from "react-router-dom"
 
 const Users = () => {
     const dispatch = useDispatch()
-    const users = useSelector(state => state.users.users)
+    const users = useSelector(state => state.users.entities)
     useEffect(() => {
         const dataUsers = async () => {
             dispatch(fetchUsers())

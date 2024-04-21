@@ -10,3 +10,12 @@ export const getAllUsers = () => {
         return 'Cant get data'
     }
 }
+
+export const getUser = (id) => {
+    try {
+        const request = axios.get(`${baseUrl}/${id}`)
+        return request.then(response => response.data)
+    } catch (error) {
+        return 'Cant get data'
+    }
+}
