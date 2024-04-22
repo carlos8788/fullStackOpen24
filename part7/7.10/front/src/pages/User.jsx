@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { fetchOneUser } from "../redux/usersSlice"
 
 const User = () => {
@@ -13,9 +13,9 @@ const User = () => {
     }, [dispatch])
     return (
         <>
-            <h3>{user.name}</h3>
+            <h3>{user?.name}</h3>
             <h4>added blogs</h4>
-            {user.blogs.map( blog => <li key={blog.id}>{blog.title}</li>)}
+            {user?.blogs.map( blog => <li key={blog.id}><Link to={`/blog/${blog.id}`}>{blog.title}</Link></li>)}
             <button onClick={() => navigate('/users')}>BACK</button>
         </>
     )

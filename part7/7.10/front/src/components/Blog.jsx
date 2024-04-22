@@ -15,7 +15,7 @@ const Blog = ({ blog, userID, deleteBlog, }) => {
   const [likes, setLikes] = useState(blog?.likes || 0)
 
   const handleAddLike = async () => {
-    dispatch(updateBlogs(blog.id)).then(data => console.log(data))
+    dispatch(updateBlogs(blog.id))
 
   };
 
