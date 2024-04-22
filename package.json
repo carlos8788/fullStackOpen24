@@ -1,6 +1,0 @@
-{
-	"dependencies": {
-		"@mui/material": "^5.15.15",
-		"@emotion/react": "^11.11.4"
-	}
-}
