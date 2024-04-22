@@ -1,7 +1,31 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { getBlog } from '../redux/blogSlice'
+import { getBlog, updateBlogs } from '../redux/blogSlice'
+
+const Estructure = ({ blog }) => {
+    const [likes, setLikes] = useState(blog.likes);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        setLikes(blog.likes);
+    }, [blog.likes]);
+
+    const handleClick = () => {
+        dispatch(updateBlogs(blog.id));
+        setLikes(prevLikes => prevLikes + 1);
+    };
+
+    return (
+        <>
+            <h2>{blog?.title}</h2>
+            <a href={blog?.url}>{blog?.url}</a>
+            <p>{likes} likes</p>
+            <button onClick={handleClick}>like</button>
+            <p>added by {blog?.user.name}</p>
+        </>
+    );
+};
 
 const Blogs = () => {
     const id = useParams().id
@@ -12,7 +36,9 @@ const Blogs = () => {
     }, [])
     return (
         <div>
-            <h2>{blog.title}</h2>
+            {
+                blog && <Estructure blog={blog} />
+            }
         </div>
     )
 }
