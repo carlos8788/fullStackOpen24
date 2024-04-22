@@ -26,6 +26,12 @@ export const getBlog = createAsyncThunk('blogs/getBlog', async (id) => {
   return blog
 })
 
+export const addCommentBlog = createAsyncThunk('Comments/addCommentBlog', async ({id, comment}) => {
+  console.log({id, comment})
+  const blog = await blogService.addComment({id, comment})
+  return blog;
+})
+
 const blogsSlice = createSlice({
   name: 'blogs',
   initialState: {
@@ -62,6 +68,9 @@ const blogsSlice = createSlice({
       })
       .addCase(getBlog.fulfilled, (state, action) => {
         state.currentBlog = action.payload
+      })
+      .addCase(addCommentBlog.fulfilled, (state, action) => {
+        state.currentBlog.comments = action.payload.comments
       });
   }
 });

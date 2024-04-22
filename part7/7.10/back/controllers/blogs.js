@@ -39,6 +39,7 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
 blogsRouter.get('/:id', async (request, response) => {
   const blog = await Blog.findById(request.params.id).populate('user', { username: 1, name: 1 })
   if (blog) {
+    console.log(blog)
     response.json(blog)
   } else {
     response.status(404).end()
@@ -56,8 +57,8 @@ blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
   }
 
   const existBlog = await Blog.findByIdAndUpdate(request.params.id, { $inc: { likes: 1 } }, { new: true })
-  
-  
+
+
   response.status(203).json(existBlog)
 
 })
@@ -72,6 +73,19 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) =
   if (blog.user.toString() !== user._id.toString()) return response.status(401).json({ error: 'unauthorized' })
   await Blog.findByIdAndDelete(request.params.id)
   response.status(204).end()
+})
+
+blogsRouter.put('/:id/comments', async (request, response) => {
+  try {
+    const blog = await Blog.findByIdAndUpdate(
+      request.params.id,
+      { $push: { comments: request.body.comment } },
+      { new: true }  
+    )
+    response.status(200).json(blog)
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 
