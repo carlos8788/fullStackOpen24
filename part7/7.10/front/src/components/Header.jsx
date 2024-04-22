@@ -12,6 +12,8 @@ import { useEffect, useRef } from 'react'
 import api from '../services/blogs';
 import { setUsers } from '../redux/loginSlice';
 import { getUser } from '../utils/permanentSession';
+import { Box, Button, Typography } from "@mui/material";
+import { red } from "@mui/material/colors";
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -35,9 +37,11 @@ const Header = () => {
     }, [dispatch])
     const blogForm = () => {
         return (
+
             <Togglable buttonLabel='new blog' ref={blogRef} buttonId='newBlog'>
                 <NewBlog handlesubmit={handleSubmitBlog} />
             </Togglable>
+
         )
     }
     const handleSubmit = async (e) => {
@@ -88,8 +92,13 @@ const Header = () => {
                 user && user.name
                     ?
                     <>
-                        <h2>{user?.name} Log in </h2>
-                        <button onClick={logout}>Logout</button>
+                        <Box sx={{display:'flex', justifyContent:'space-between', my:3}}>
+                            <Typography variant="h5" component={"h2"} sx={{ fontWeight: "bold", color: 'lightblue' }}>
+                                {user?.name} Log in
+                            </Typography>
+                            <Button onClick={logout} variant="contained" sx={{ backgroundColor: red[500], '&:hover': { backgroundColor: red[700] } }}>Logout</Button>
+                        </Box>
+
                         {location.pathname === '/' && blogForm()}
                     </>
                     : <Login handleSubmit={handleSubmit} />

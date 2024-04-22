@@ -1,27 +1,52 @@
 import PropTypes from 'prop-types';
+import { Typography, TextField, Button, Box, Grid } from '@mui/material';
 
-
-const NewBlog = ({ handlesubmit }) => {
+const NewBlog = ({ handleSubmit, cancel }) => {
     return (
         <>
-            <h2>Create new Blog</h2>
-            <form onSubmit={handlesubmit}>
-                <div>
-                    <label htmlFor="title">title</label>
-                    <input type="text" name="title" id='title'/>
-                </div>
-                <div>
-                    <label htmlFor="author">author</label>
-                    <input type="text" name="author" id='author'/>
-                </div>
-                <div>
-                    <label htmlFor="url">url</label>
-                    <input type="text" name="url" id='url'/>
-                </div>
-                <input type="submit" value="submit" id='submit'/>
+            <Typography component="h2" variant="h6">
+                Create New Blog
+            </Typography>
+
+            <form onSubmit={handleSubmit}>
+                <Grid container direction="column" spacing={2}>
+                    <Grid item>
+                        <TextField
+                            label="Title"
+                            variant="outlined"
+                            name="title"
+                            id="title"
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            label="Author"
+                            variant="outlined"
+                            name="author"
+                            id="author"
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            label="URL"
+                            variant="outlined"
+                            name="url"
+                            id="url"
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item>
+                        <Button type="submit" variant="contained" color="primary" fullWidth>
+                            Submit
+                        </Button>
+                    </Grid>
+                </Grid>
             </form>
+
         </>
-    )
+    );
 }
 
 NewBlog.propTypes = {
